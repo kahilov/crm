@@ -1,26 +1,41 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import React, { Component } from "react";
+import "./App.css";
+import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import axios from "axios";
+import { observer, inject } from "mobx-react";
+import Actions from "./mainComponents/Actions";
+import Analytics from "./mainComponents/Analytics";
+import Clients from "./mainComponents/Clients";
+@inject("clientStore")
+@observer
+class App extends Component {
+  componentWillMount() {
+    this.props.clientStore.getClients();
+    this.props.clientStore.formatDate()
+    this.props.clientStore.getOwners();
+    this.props.clientStore.getCountries();
+  }
+  render() {
+    return (
+      <Router>
+        <div className="App">
+          <div className="main-links">
+            <Link className="main-links" to="/clients">
+              Clients
+            </Link>
+            <Link className="main-links" to="/actions">
+              Actions
+            </Link>
+            <Link className="main-links" to="/analytics">
+              Analytics
+            </Link>
+          </div>
+          <Route path="/clients" exact render={() => <Clients />} />
+          <Route path="/actions" exact render={() => <Actions />} />
+          <Route path="/analytics" exact render={() => <Analytics />} />
+        </div>
+      </Router>
+    );
+  }
 }
-
 export default App;

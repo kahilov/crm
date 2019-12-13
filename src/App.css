@@ -23,11 +23,19 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
-
+.charts{
+  text-align: left;
+}
 .App-link {
   color: #61dafb;
 }
-
+.main-links{
+  margin: 50px
+}
+.client{
+  display: flex;
+  flex-direction: column;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
