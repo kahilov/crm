@@ -31,7 +31,7 @@ class Analytics extends Component {
   getEmailsSent = () => {
     let emailsSentArr = [];
     let clients = this.props.clientStore.clients;
-    emailsSentArr = clients.filter(c => c.emailType);
+    emailsSentArr = clients.filter(c => c.emailType != "null");
     return emailsSentArr.length;
   };
   getOutstandingClients = () => {
@@ -102,28 +102,34 @@ class Analytics extends Component {
     return topThree;
   };
   render() {
-    let newClients = this.getNewClients();
-    let emailsSent = this.getEmailsSent();
-    let outstandingClients = this.getOutstandingClients();
-    let hottestCountry = this.getHottestCountry();
-    let salesByCountry = this.getCountryData();
-    let topEmployees = this.getTopEmployees();
-    return (
-      <div>
-        <div className="badges">
-          <NewClients num={newClients} />
-          <EmailsSent num={emailsSent} />
-          <OutstandingClients num={outstandingClients} />
-          <HottestCountry country={hottestCountry} />
+    if (this.props.clientStore.countries.length === 0) {
+      return (
+        <h1>Loading...</h1>
+      )
+    } else {
+      let newClients = this.getNewClients();
+      let emailsSent = this.getEmailsSent();
+      let outstandingClients = this.getOutstandingClients();
+      let hottestCountry = this.getHottestCountry();
+      let salesByCountry = this.getCountryData();
+      let topEmployees = this.getTopEmployees();
+      return (
+        <div>
+          <div className="badges">
+            <NewClients num={newClients} />
+            <EmailsSent num={emailsSent} />
+            <OutstandingClients num={outstandingClients} />
+            <HottestCountry country={hottestCountry} />
+          </div>
+          <div className="charts">
+            Countries By Sales
+            <SalesByCountry data={salesByCountry} />
+            Top Three Employees by Sales
+            <TopEmployees top={topEmployees} />
+          </div>
         </div>
-        <div className="charts">
-          Countries By Sales
-          <SalesByCountry data={salesByCountry} />
-          Top Three Employees by Sales
-          <TopEmployees top={topEmployees} />
-        </div>
-      </div>
-    );
+      );
+    }
   }
 }
 export default Analytics;

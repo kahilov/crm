@@ -1,6 +1,7 @@
 import { observable, action, computed } from "mobx";
 import Client from "./Client";
-const Data = require("../data/data.json");
+import axios from "axios";
+const clientsRoute = "http://localhost:4000/clients";
 
 export class ClientStore {
   @observable clients = [];
@@ -9,26 +10,25 @@ export class ClientStore {
   @computed get totalClients() {
     return this.clients.length;
   }
-  @action formatDate = () => {
-    this.clients.forEach(c => c.firstContact = c.firstContact.slice(0,10));
-  };
-  @action getClients = () => {
-    Data.forEach(d => this.clients.push(d));
-  };
-  @action getOwners = () => {
-    for (let client of Data) {
+  @action getData = async () => {
+    let data = await axios.get(clientsRoute);
+    data = data.data[0];
+    this.clients = data;
+    let owners = [];
+    let countries = [];
+    for (let client of this.clients) {
       if (!this.owners.find(o => o === client.owner)) {
-        this.owners.push(client.owner);
+        owners.push(client.owner);
       }
     }
-  };
-  @action getCountries = () => {
-    for (let client of Data) {
+    this.owners = owners;
+    for (let client of this.clients) {
       if (!this.countries.find(c => c === client.country)) {
-        let country = client.country
-        this.countries.push(country);
+        let country = client.country;
+        countries.push(country);
       }
     }
+    this.countries = countries;
   };
   @action editClient = (id, name, country) => {
     let clientIndex = this.clients.findIndex(c => c._id === id);

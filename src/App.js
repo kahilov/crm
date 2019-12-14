@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
 import { BrowserRouter as Router, Route, Link } from "react-router-dom";
-import axios from "axios";
 import { observer, inject } from "mobx-react";
 import Actions from "./mainComponents/Actions";
 import Analytics from "./mainComponents/Analytics";
@@ -9,11 +8,8 @@ import Clients from "./mainComponents/Clients";
 @inject("clientStore")
 @observer
 class App extends Component {
-  componentWillMount() {
-    this.props.clientStore.getClients();
-    this.props.clientStore.formatDate()
-    this.props.clientStore.getOwners();
-    this.props.clientStore.getCountries();
+   componentWillMount() {
+    this.props.clientStore.getData();
   }
   render() {
     return (
