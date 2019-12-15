@@ -19,11 +19,13 @@ class Analytics extends Component {
     month = month < 10 ? "0" + (month + 1) : month + 1;
     month = String(month);
     for (let client of clients) {
-      if (
-        client.firstContact.includes(year) &&
-        client.firstContact.includes(month)
-      ) {
-        newClientArr.push(client);
+      if (client.firstContact) {
+        if (
+          client.firstContact.includes(year) &&
+          client.firstContact.includes(month)
+        ) {
+          newClientArr.push(client);
+        }
       }
     }
     return newClientArr.length;
@@ -50,7 +52,6 @@ class Analytics extends Component {
         countries[countryIndex].push(client.country);
       }
     }
-    console.log(countries)
     return countries;
   };
   getHottestCountry = () => {
@@ -104,9 +105,7 @@ class Analytics extends Component {
   };
   render() {
     if (this.props.clientStore.countries.length === 0) {
-      return (
-        <h1>Loading...</h1>
-      )
+      return <h1>Loading...</h1>;
     } else {
       let newClients = this.getNewClients();
       let emailsSent = this.getEmailsSent();
@@ -114,7 +113,7 @@ class Analytics extends Component {
       let salesByCountry = this.getCountryData();
       let hottestCountry = this.getHottestCountry();
       let topEmployees = this.getTopEmployees();
-      console.log(salesByCountry)
+      console.log(salesByCountry);
       return (
         <div>
           <div className="badges">

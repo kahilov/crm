@@ -3,11 +3,13 @@ import { observer, inject } from "mobx-react";
 @inject("clientStore")
 @observer
 class Clients extends Component {
-  editClient = e => {
+  editClient = async e => {
     let id = e.currentTarget.id;
+    console.log(id)
     let name = prompt("Please Input New Name");
     let country =  prompt("Please Input New Country");
-    this.props.clientStore.editClient(id,name, country);
+    await this.props.clientStore.editClient(id,name, country);
+    this.props.clientStore.getData();
   };
   render() {
     const clientStore = this.props.clientStore;
@@ -23,7 +25,7 @@ class Clients extends Component {
             <th>Owner</th>
           </tr>
           {clientStore.clients.map(c => (
-            <tr id = {c._id} onDoubleClick={this.editClient}>
+            <tr id = {c.id} onDoubleClick={this.editClient}>
               <td>{c.name}</td>
               <td>{c.email}</td>
               <td>{c.firstContact}</td>

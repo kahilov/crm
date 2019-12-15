@@ -2,7 +2,11 @@ import { observable, action, computed } from "mobx";
 import Client from "./Client";
 import axios from "axios";
 const clientsRoute = "http://localhost:4000/clients";
-
+const updateOwnerRoute = "http://localhost:4000/updateOwner";
+const updateEmailRoute = "http://localhost:4000/updateEmail";
+const updateSoldRoute = "http://localhost:4000/updateSold";
+const addClientRoute = "http://localhost:4000/addClient";
+const editClientRoute = "http://localhost:4000/editClient";
 export class ClientStore {
   @observable clients = [];
   @observable owners = [];
@@ -21,34 +25,34 @@ export class ClientStore {
         owners.push(client.owner);
       }
     }
-    console.log(owners)
     this.owners = owners;
     for (let client of this.clients) {
       if (!countries.find(c => c === client.country)) {
         countries.push(client.country);
       }
     }
-    console.log(countries)
     this.countries = countries;
   };
-  @action editClient = (id, name, country) => {
-    let clientIndex = this.clients.findIndex(c => c._id === id);
-    this.clients[clientIndex].name = name;
-    this.clients[clientIndex].country = country;
+  @action editClient = async (id, name, country) => {
+    await axios.post(editClientRoute, { id: id, name: name, country: country });
   };
-  @action addClient = (name, country, owner,email) => {
-    this.clients.push(new Client(name, country, owner,email));
+  @action addClient = async (name, country, owner, email) => {
+    const client = new Client(name, country, owner, email);
+    await axios.post(addClientRoute, { client: client });
   };
-  @action updateOwner = (name, owner) => {
-    let formerOwnerInd = this.clients.findIndex(c => c.name === name);
-    this.clients[formerOwnerInd].owner = owner;
+  @action updateOwner = async (name, owner) => {
+    let formerOwner = this.clients.find(c => c.name === name);
+    let id = formerOwner.id;
+    await axios.post(updateOwnerRoute, { id: id, owner: owner });
   };
-  @action updateEmail = (name, type) => {
-    let ownerInd = this.clients.findIndex(c => c.name === name);
-    this.clients[ownerInd].emailType = type;
+  @action updateEmail = async (name, type) => {
+    let client = this.clients.find(c => c.name === name);
+    let id = client.id;
+    await axios.post(updateEmailRoute, { id: id, email: type });
   };
-  @action updateSold = name => {
-    let ownerInd = this.clients.findIndex(c => c.name === name);
-    this.clients[ownerInd].sold = true;
+  @action updateSold = async name => {
+    let client = this.clients.find(c => c.name === name);
+    let id = client.id;
+    await axios.post(updateSoldRoute, { id: id });
   };
 }
