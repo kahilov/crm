@@ -11,7 +11,8 @@ class Actions extends Component {
     this.props.clientStore.addClient(
       this.props.actionStore.name,
       this.props.actionStore.country,
-      this.props.actionStore.owner
+      this.props.actionStore.owner,
+      this.props.actionStore.email
     );
   };
   updateOwner = () => {
@@ -56,6 +57,11 @@ class Actions extends Component {
         <div>
           Add Client
           <input onChange={this.inputHandler} name="name" placeholder="Name" />
+          <input
+            onChange={this.inputHandler}
+            name="email"
+            placeholder="Email"
+          />
           <input
             onChange={this.inputHandler}
             name="owner"

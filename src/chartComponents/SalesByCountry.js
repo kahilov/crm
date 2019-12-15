@@ -16,7 +16,7 @@ export default class salesByCountry extends PureComponent {
   render() {
     const sales = this.props.data
     const data = sales.map(s=> s = {name:s[0], sales : s.length})
-
+    console.log(data)
     return (
       <BarChart
         width={500}

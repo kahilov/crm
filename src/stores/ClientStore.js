@@ -17,17 +17,18 @@ export class ClientStore {
     let owners = [];
     let countries = [];
     for (let client of this.clients) {
-      if (!this.owners.find(o => o === client.owner)) {
+      if (!owners.find(o => o === client.owner)) {
         owners.push(client.owner);
       }
     }
+    console.log(owners)
     this.owners = owners;
     for (let client of this.clients) {
-      if (!this.countries.find(c => c === client.country)) {
-        let country = client.country;
-        countries.push(country);
+      if (!countries.find(c => c === client.country)) {
+        countries.push(client.country);
       }
     }
+    console.log(countries)
     this.countries = countries;
   };
   @action editClient = (id, name, country) => {
@@ -35,8 +36,8 @@ export class ClientStore {
     this.clients[clientIndex].name = name;
     this.clients[clientIndex].country = country;
   };
-  @action addClient = (name, country, owner) => {
-    this.clients.push(new Client(name, country, owner));
+  @action addClient = (name, country, owner,email) => {
+    this.clients.push(new Client(name, country, owner,email));
   };
   @action updateOwner = (name, owner) => {
     let formerOwnerInd = this.clients.findIndex(c => c.name === name);

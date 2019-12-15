@@ -50,6 +50,7 @@ class Analytics extends Component {
         countries[countryIndex].push(client.country);
       }
     }
+    console.log(countries)
     return countries;
   };
   getHottestCountry = () => {
@@ -110,9 +111,10 @@ class Analytics extends Component {
       let newClients = this.getNewClients();
       let emailsSent = this.getEmailsSent();
       let outstandingClients = this.getOutstandingClients();
-      let hottestCountry = this.getHottestCountry();
       let salesByCountry = this.getCountryData();
+      let hottestCountry = this.getHottestCountry();
       let topEmployees = this.getTopEmployees();
+      console.log(salesByCountry)
       return (
         <div>
           <div className="badges">

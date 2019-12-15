@@ -8,9 +8,12 @@ export default class Client {
     .substr(2, 10);
   @observable country;
   @observable owner;
-  constructor(name, country, owner) {
+  @observable email;
+  constructor(id ,name, country, owner,email) {
+    this.id = id
     this.name = name;
     this.country = country;
     this.owner = owner;
+    this.email = email;
   }
 }
